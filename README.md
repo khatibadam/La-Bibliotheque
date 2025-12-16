@@ -15,7 +15,7 @@ mon_env\Scripts\activate
 source mon_env/bin/activate
 
 # Installer les dépendances
-pip install fastapi sqlmodel uvicorn
+pip install -r requirements.txt
 ```
 
 ##  Lancement
