@@ -3,11 +3,27 @@ from fastapi import APIRouter, HTTPException, Query
 from sqlmodel import Session, select
 from app.models import Author, Book
 from app.database import engine
+from datetime import date, datetime
 
 router = APIRouter(
     prefix="/authors",
     tags=["Auteurs"]
 )
+
+# Fonction permettant de formater la date avant de la placer dans la base de données. Nécessaire car sinon nous avons l'erreur 'SQLite Date type only accepts Python date objects as input.'
+def formatage_date(v, field_name: str):
+    if v is None:
+        return None
+    if isinstance(v, datetime):
+        return v.date()
+    if isinstance(v, date):
+        return v
+    if isinstance(v, str):
+        try:
+            return date.fromisoformat(v)
+        except ValueError:
+            raise HTTPException(422, f"Le format de la date est invalide. La date du champ {field_name} doit être au format YYYY-MM-DD")
+    raise HTTPException(422, f"Le format de la date est invalide. La date du champ {field_name} doit être au format YYYY-MM-DD")
 
 # Cette route sera destinée à lister tous les auteurs disponibles dans la base de données
 @router.get("/")
@@ -72,6 +88,9 @@ def search_authors(
 @router.post("/", response_model=Author)
 def create_author(author: Author):
     with Session(engine) as session:
+        author.birth = formatage_date(author.birth, "birth")
+        author.death = formatage_date(author.death, "death")
+
         exists = session.exec(
             select(Author).where(
                 Author.firstname == author.firstname,
@@ -110,11 +129,13 @@ def update_author(author_id: int, author: Author):
         db_author = session.get(Author, author_id)
         if not db_author:
             raise HTTPException(404, "L'auteur est introuvable dans la base de données")
-        
+
         author_data = author.model_dump(exclude_unset=True)
         for key, value in author_data.items():
+            if key in ("birth", "death"):
+                value = formatage_date(value, key)
             setattr(db_author, key, value)
-        
+
         session.add(db_author)
         session.commit()
         session.refresh(db_author)

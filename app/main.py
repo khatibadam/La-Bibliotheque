@@ -1,7 +1,7 @@
 # app/main.py
 from fastapi import FastAPI
 from app.database import create_db_and_tables
-from app.routers import books, authors
+from app.routers import books, authors, loans
 
 # Les infos de base de l'API
 app = FastAPI(
@@ -13,6 +13,7 @@ app = FastAPI(
 # On importe le fichier des books et des authors
 app.include_router(books.router)
 app.include_router(authors.router)
+app.include_router(loans.router)
 
 # Création de la base de données et lancement de la fonction (create_db_and_tables) à l'exécution du script 
 @app.on_event("startup")
