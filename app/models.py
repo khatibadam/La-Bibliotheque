@@ -64,10 +64,10 @@ class Loan(SQLModel, table=True):
     loaner_name: str
     loaner_mail: str = Field(index=True)
     loaner_card_id: int = Field(index=True)
-    start_date: date = Field(index=True)
-    due_date: date = Field(index=True)
-    returned_date: date = Field(default=None, index=True)
-    active: bool = Field(default=True, index=True)
+    start_date: date
+    due_date: date
+    returned_date: date = Field(default=None, nullable=True)
+    active: bool = Field(default=True)
     renew_count: int = Field(default=0, ge=0)
     late_days: int = Field(default=0, ge=0)
     penalty_cents: int = Field(default=0, ge=0)
