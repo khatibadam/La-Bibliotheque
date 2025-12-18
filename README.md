@@ -45,6 +45,12 @@ La Documentation Swagger sera accessible sur : `http://localhost:8000/docs`
 - `DELETE /authors/{author_id}` - Supprimer un auteur
 - `GET /authors/search/` - Rechercher des auteurs
 
+### Emprunts
+- `POST /loans/` - Créer un emprunt
+- `POST /loans/{loan_id}/return` - Retourner un livre (clôturer l'emprunt)
+- `POST /loans/{loan_id}/renew` - Renouveler/continuer un emprunt (Cela ajoute 14 jours et 1 fois maximum)
+- `GET /loans/` - Lister les emprunts (avec les statuts actif, en retard ou afficher l'historique)
+
 ## Technologies
 
 - **FastAPI** - Framework web moderne et rapide
