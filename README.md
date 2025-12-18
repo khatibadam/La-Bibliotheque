@@ -62,9 +62,19 @@ La Documentation Swagger sera accessible sur : `http://localhost:8000/docs`
 ## Structure
 
 ```
-├── app/
-│   ├── main.py         # Point d'entrée de l'API
-│   └── database.db     # Base de données SQLite
-├── mon_env/            # Environnement virtuel
-└── sujet_bibli.md      # Spécifications détaillées
+├─ app
+│  ├─ database.py
+│  ├─ main.py           # Point d'entrée de l'API
+│  ├─ models.py         # Définition des models
+│  ├─ routers           # Définition des routes
+│  │  ├─ authors.py
+│  │  ├─ books.py
+│  │  ├─ loans.py
+│  │  └─ __init__.py
+│  └─ __init__.py
+├─ database.db          # Base de données SQLite
+├─ mon_env/             # Environnement virtuel
+├─ README.md
+├─ requirements.txt
+└─ sujet_bibli.md       # Sujet du TP
 ```
