@@ -3,7 +3,8 @@ from sqlmodel import Field, SQLModel
 from pydantic import model_validator, field_validator
 from datetime import date, datetime
 
-# On définit les classes Book + Author afin d'être exploitées par les tables
+# On définit les classes Book, Author et Loan afin que l'api puisse écrire les données dans les tables
+
 class Book(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
     title: str
@@ -23,7 +24,7 @@ class Book(SQLModel, table=True):
         if self.copies > self.owned:
             raise ValueError("Le nombre d'exemplaires ne peut pas dépasser le total possédé")
         return self
-    
+
 class Author(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
     firstname: str
@@ -54,19 +55,20 @@ class Author(SQLModel, table=True):
                 try:
                     return datetime.strptime(v, "%d/%m/%Y").date()
                 except ValueError as e:
-                    raise ValueError(
-                        "Format de date invalide. Utilise 'YYYY-MM-DD' (ex: 1985-04-12)."
-                    ) from e
-
+                    raise ValueError("Format de date invalide. Utilise 'YYYY-MM-DD' (ex: 1985-04-12).") from e
         raise TypeError("La date doit être une date, un datetime, ou une string 'YYYY-MM-DD'.")
 
 class Loan(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
-    book_id: int
+    book_id: int = Field(index=True)
     loaner_name: str
-    loaner_mail: str
-    loaner_card_id: int
-    loaning_start_date: int
-    loaning_stop_limit_date: int
-    loaning_stop_real_date: int
-    comment: str
+    loaner_mail: str = Field(index=True)
+    loaner_card_id: int = Field(index=True)
+    start_date: date = Field(index=True)
+    due_date: date = Field(index=True)
+    returned_date: date = Field(default=None, index=True)
+    active: bool = Field(default=True, index=True)
+    renew_count: int = Field(default=0, ge=0)
+    late_days: int = Field(default=0, ge=0)
+    penalty_cents: int = Field(default=0, ge=0)
+    comment: str | None = None

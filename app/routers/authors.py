@@ -122,7 +122,6 @@ def read_author(author_id: int):
             "books": books,
         }
 
-
 @router.patch("/{author_id}", response_model=Author)
 def update_author(author_id: int, author: Author):
     with Session(engine) as session:

@@ -10,7 +10,7 @@ app = FastAPI(
     version="1.0.0",
 )
 
-# On importe le fichier des books et des authors
+# On inclus les routers
 app.include_router(books.router)
 app.include_router(authors.router)
 app.include_router(loans.router)
