@@ -26,6 +26,7 @@ uvicorn app.main:app --reload
 
 L'API sera accessible sur `http://localhost:8000`  
 La Documentation Swagger sera accessible sur : `http://localhost:8000/docs`
+<img width="1499" height="993" alt="Screenshot 2025-12-18 at 11-46-10 La Bibliothèque - Swagger UI" src="https://github.com/user-attachments/assets/1743ef07-131b-4240-9f90-21b7fb79ae8c" />
 
 ## Endpoints principaux
 
